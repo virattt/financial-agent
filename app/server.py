@@ -8,7 +8,7 @@ app = FastAPI()
 
 @app.get("/")
 async def redirect_root_to_docs():
-    return RedirectResponse("/docs")
+    return RedirectResponse("/agent/playground")
 
 # # Edit this to add the chain you want to add
 # add_routes(app, NotImplemented)

@@ -1,6 +1,10 @@
 from langchain_community.tools import PolygonLastQuote, PolygonTickerNews, PolygonFinancials, PolygonAggregates
 from langchain_community.utilities.polygon import PolygonAPIWrapper
 from langchain_openai.chat_models import ChatOpenAI
+from dotenv import load_dotenv
+
+# Load the environment variables
+load_dotenv()
 
 # Choose the LLM that will drive the agent
 model = ChatOpenAI(model="gpt-4-0125-preview", streaming=True)
@@ -18,9 +22,9 @@ from langgraph.prebuilt import ToolExecutor
 
 tool_executor = ToolExecutor(tools)
 
-from langchain.tools.render import format_tool_to_openai_function
+from langchain_core.utils.function_calling import convert_to_openai_function
 
-functions = [format_tool_to_openai_function(t) for t in tools]
+functions = [convert_to_openai_function(t) for t in tools]
 model = model.bind_functions(functions)
 
 from typing import TypedDict, Annotated, Sequence
