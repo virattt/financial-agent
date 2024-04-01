@@ -6,6 +6,7 @@ To use this agent, you will need an OpenAI API key and a Polygon API key. If you
 
 For a simple example of how this agent works, check out the colab notebook [here](https://colab.research.google.com/gist/virattt/de0423a505f8c7e28f79aef541f6dce0/langchain-financial-agent.ipynb).
 
+**Disclaimer**: The agent is **not** intended as financial advice.  The agent is for informational and entertainment purposes only.  As Warren Buffett says, do your own due diligence.
 ## Deploy locally with Docker
 
 For easy install and secure containerized deployment, install the appropriate version of [Docker](https://www.docker.com/) for your operating system.
