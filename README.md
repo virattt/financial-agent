@@ -2,11 +2,7 @@
 
 This is a financial agent built on Langchain and FastAPI. It can access current price, historical prices, latest news, and financial data for a ticker via the Polygon API. 
 
-Furthermore, it can compute financial metrics like owner earnings, return on equity, and return on invested capital.
-
-The agent also has the ability to do a simple discounted cash flow valuation.
-
-To use this agent, you will need an OpenAI API key and a Polygon API key.
+The agent can compute financial metrics like owner earnings, return on equity, and return on invested capital.  The agent can also do a simple discounted cash flow valuation.
 
 For a simple example of how this agent works, check out the colab notebook [here](https://colab.research.google.com/gist/virattt/de0423a505f8c7e28f79aef541f6dce0/langchain-financial-agent.ipynb).
 
@@ -55,6 +51,10 @@ poetry install
 poetry shell
 ```
 
+**Important**: To use this agent, you will need an OpenAI API key and a Polygon API key.
+- If you don't have an OpenAI API key, you can get one [here](https://platform.openai.com/).
+- If you don't have a Polygon API key, you can get one [here](https://polygon.io/).
+
 Copy the `.env.example` file to a new file called `.env`:
 
 ```bash
@@ -69,9 +69,6 @@ Alternatively, you can set these environment variables in your terminal:
 export OPENAI_API_KEY=<your-openai-api-key>
 export POLYGON_API_KEY=<your-polygon-api-key>
 ```
-
-- If you don't have an OpenAI API key, you can get one [here](https://platform.openai.com/).
-- If you don't have a Polygon API key, you can get one [here](https://polygon.io/).
 
 Finally, start the LangChain server:
 
