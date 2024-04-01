@@ -1,7 +1,19 @@
+import json
+import operator
+from typing import TypedDict, Annotated, Sequence
+
+from dotenv import load_dotenv
 from langchain_community.tools import PolygonLastQuote, PolygonTickerNews, PolygonFinancials, PolygonAggregates
 from langchain_community.utilities.polygon import PolygonAPIWrapper
+from langchain_core.messages import BaseMessage
+from langchain_core.messages import FunctionMessage
+from langchain_core.utils.function_calling import convert_to_openai_function
 from langchain_openai.chat_models import ChatOpenAI
-from dotenv import load_dotenv
+from langgraph.graph import StateGraph, END
+from langgraph.prebuilt import ToolExecutor
+from langgraph.prebuilt import ToolInvocation
+
+from app.tools import discounted_cash_flow, owner_earnings, roic, roe
 
 # Load the environment variables
 load_dotenv()
@@ -11,34 +23,24 @@ model = ChatOpenAI(model="gpt-4-0125-preview", streaming=True)
 
 # Create the tools
 polygon = PolygonAPIWrapper()
-tools = [
+integration_tools = [
     PolygonLastQuote(api_wrapper=polygon),
     PolygonTickerNews(api_wrapper=polygon),
     PolygonFinancials(api_wrapper=polygon),
     PolygonAggregates(api_wrapper=polygon),
 ]
 
-from langgraph.prebuilt import ToolExecutor
+local_tools = [discounted_cash_flow, roe, roic, owner_earnings]
+tools = integration_tools + local_tools
 
 tool_executor = ToolExecutor(tools)
-
-from langchain_core.utils.function_calling import convert_to_openai_function
 
 functions = [convert_to_openai_function(t) for t in tools]
 model = model.bind_functions(functions)
 
-from typing import TypedDict, Annotated, Sequence
-import operator
-from langchain_core.messages import BaseMessage
-
 
 class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
-
-
-from langgraph.prebuilt import ToolInvocation
-import json
-from langchain_core.messages import FunctionMessage
 
 
 # Define the function that determines whether to continue or not
@@ -79,8 +81,6 @@ def call_tool(state):
     # We return a list, because this will get added to the existing list
     return {"messages": [function_message]}
 
-
-from langgraph.graph import StateGraph, END
 
 # Define a new graph
 workflow = StateGraph(AgentState)
