@@ -68,7 +68,7 @@ export POLYGON_API_KEY=<your-polygon-api-key>
 Finally, start the LangChain server:
 
 ```bash
-langchain serve
+poetry run langchain serve
 ```
 
 Then navigate to `http://localhost:8000/agent/playground/` in your browser!
